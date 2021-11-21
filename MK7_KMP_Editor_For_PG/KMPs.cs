@@ -1274,7 +1274,7 @@ namespace MK7_KMP_Editor_For_PG_
                         }
                     }
 
-                    public bool UnknownFlag
+                    public bool NoPathSwitch
                     {
                         get
                         {
@@ -1332,9 +1332,9 @@ namespace MK7_KMP_Editor_For_PG_
                         {
                             FlagValue = ForceDefaultSpeed;
                         }
-                        if (flagType == FlagType.UnknownFlag)
+                        if (flagType == FlagType.NoPathSwitch)
                         {
-                            FlagValue = UnknownFlag;
+                            FlagValue = NoPathSwitch;
                         }
 
                         return FlagValue;
