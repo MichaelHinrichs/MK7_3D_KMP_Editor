@@ -1296,7 +1296,7 @@ namespace MK7_KMP_Editor_For_PG_
                         StickToRoute,
                         BouncyMushSection,
                         ForceDefaultSpeed,
-                        UnknownFlag
+                        NoPathSwitch
                     }
 
                     public bool ConvertFlags(byte InputFlags, FlagType flagType)
