@@ -20,7 +20,7 @@ namespace MK7_KMP_Editor_For_PG_
         public KMPs.KMPHelper.ObjFlowReader.ObjFlowXmlToObject ObjFlowDictionary { get; set; }
         ModelVisual3D dv3D_OBJ = null;
 
-        KMPs.KMPHelper.ObjFlowReader ObjFlowReader = new KMPs.KMPHelper.ObjFlowReader();
+        public int ids = -1;
 
         public AddKMPObjectForm()
         {
@@ -29,6 +29,9 @@ namespace MK7_KMP_Editor_For_PG_
 
             textBox1.ScrollBars = ScrollBars.Vertical;
             textBox1.ReadOnly = true;
+
+            comboBox1.AutoCompleteMode = AutoCompleteMode.Suggest;
+            comboBox1.AutoCompleteSource = AutoCompleteSource.CustomSource;
         }
 
         public SelectedKMPObjectInfo SelectedKMPObject_Info { get; set; } = new SelectedKMPObjectInfo();
@@ -42,10 +45,15 @@ namespace MK7_KMP_Editor_For_PG_
         {
             ObjFlowDictionary = KMPs.KMPHelper.ObjFlowReader.ReadObjFlowXml("ObjFlowData.xml");
 
+            AutoCompleteStringCollection ACS_ObjFlowCollection = new AutoCompleteStringCollection();
+
             foreach (var f in ObjFlowDictionary.ObjFlows)
             {
                 comboBox1.Items.Add(f.ObjectName + "," + f.ObjectID);
+                ACS_ObjFlowCollection.Add(f.ObjectName + "," + f.ObjectID);
             }
+
+            comboBox1.AutoCompleteCustomSource = ACS_ObjFlowCollection;
 
             comboBox1.SelectedIndex = 0;
         }
@@ -81,7 +89,10 @@ namespace MK7_KMP_Editor_For_PG_
             string Path = ObjFlowDictionary.ObjFlows.Find(x => x.ObjectID == comboBox1.Text.Split(',')[1]).Path;
             dv3D_OBJ = HTK_3DES.TSRSystem.OBJReader(Path);
 
-            HTK_3DES.TransformMV3D.Transform_MV3D(OBJ_transform_Value, dv3D_OBJ);
+            HTK_3DES.TSRSystem.TransformSetting transformSetting = new HTK_3DES.TSRSystem.TransformSetting { InputMV3D = dv3D_OBJ };
+            HTK_3DES.TSRSystem.New_TransformSystem3D(OBJ_transform_Value, transformSetting);
+
+            //HTK_3DES.TransformMV3D.Transform_MV3D(OBJ_transform_Value, dv3D_OBJ);
 
             render.MainViewPort.Children.Add(dv3D_OBJ);
             #endregion
